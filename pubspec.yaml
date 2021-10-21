@@ -20,6 +20,7 @@ dependencies:
   dartz: ^0.10.0
   # networking
   dio: ^4.0.0
+  http: ^0.13.4
   # state management
   flutter_hooks: ^0.18.0
   hooks_riverpod: ^0.14.0+5
@@ -31,6 +32,7 @@ dependencies:
   flash: ^2.0.3
   # navigation route
   auto_route: ^3.0.1
+  material_design_icons_flutter: ^5.0.6295
 
 dev_dependencies:
   flutter_test:
