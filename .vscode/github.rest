@@ -1,2 +1,44 @@
-GET https://api.github.com/user/starred?page=1
-Authorization: bearer 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
+@token = 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
+@baseUrl = https://api.github.com
+@acceptHeader = application/vnd.github.v3.html+json
+
+GET {{baseUrl}}/user/starred
+    ?page=1
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+If-None-Match: W/"0bcdb410fd4cf9b7f2eefaf557d91ee40e64462211209488d3d0b7cc57d4c622"
+
+###
+
+GET {{baseUrl}}/search/repositories
+    ?q=flutter
+    &page=1
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+
+GET {{baseUrl}}/repos/flutter/flutter/readme
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+
+###
+
+PUT {{baseUrl}}/user/starred/ZattWine/kyawzayartun
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+Content-Length: 0
+
+###
+
+DELETE {{baseUrl}}/user/starred/ZattWine/kyawzayartun
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+Content-Length: 0
+
+###
+
+GET {{baseUrl}}/user/starred/ZattWine/kyawzayartun
+Authorization: bearer {{token}}
+Accept: {{acceptHeader}}
+Content-Length: 0

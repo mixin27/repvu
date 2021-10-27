@@ -35,7 +35,7 @@ class GithubAuthenticator {
   static final tokenEndpoint =
       Uri.parse('https://github.com/login/oauth/access_token');
   static final revocationEndpoint =
-      Uri.parse('https://api.github.com/applications/$clientId/$clientSecret');
+      Uri.parse('https://api.github.com/applications/$clientId/token');
   static final redirectUrl = Uri.parse('http://localhost:3000/callback');
 
   /// Get signed in credentials from storage.
@@ -107,15 +107,16 @@ class GithubAuthenticator {
   /// Sign out user.
   ///
   Future<Either<AuthFailure, Unit>> signOut() async {
-    final accessToken = await _credentialsStorage
-        .read()
-        .then((credentials) => credentials?.accessToken);
-
-    final usernameAndPassword =
-        stringToBase64.encode('$clientId:$clientSecret');
     try {
+      final accessToken = await _credentialsStorage
+          .read()
+          .then((credentials) => credentials?.accessToken);
+
+      final usernameAndPassword =
+          stringToBase64.encode('$clientId:$clientSecret');
+
       try {
-        _dio.deleteUri(
+        await _dio.deleteUri(
           revocationEndpoint,
           data: {
             'access_token': accessToken,
@@ -134,6 +135,14 @@ class GithubAuthenticator {
         }
       }
 
+      return clearCredentialsStorage();
+    } on PlatformException {
+      return left(const AuthFailure.storage());
+    }
+  }
+
+  Future<Either<AuthFailure, Unit>> clearCredentialsStorage() async {
+    try {
       await _credentialsStorage.clear();
       return right(unit);
     } on PlatformException {

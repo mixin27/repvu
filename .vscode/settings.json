@@ -10,5 +10,4 @@
     "**/*.g.dart": true,
     "**/.gitkeep": false
   },
-  "explorerExclude.backup": null
 }
