@@ -8,24 +8,27 @@ import '../../../../search/presentation/search_bar.dart';
 import '../../../core/shared/providers.dart';
 import '../../core/presentation/paginated_repos_list_view.dart';
 
-class StarredReposPage extends StatefulWidget {
-  const StarredReposPage({
+class SearchedReposPage extends StatefulWidget {
+  const SearchedReposPage({
     Key? key,
+    required this.searchTerm,
   }) : super(key: key);
 
+  final String searchTerm;
+
   @override
-  State<StarredReposPage> createState() => _StarredReposPageState();
+  _SearchedReposPageState createState() => _SearchedReposPageState();
 }
 
-class _StarredReposPageState extends State<StarredReposPage> {
+class _SearchedReposPageState extends State<SearchedReposPage> {
   @override
   void initState() {
     super.initState();
 
     Future.microtask(
       () => context
-          .read(starredReposNotifierProvider.notifier)
-          .getNextStarredReposPage(),
+          .read(searchedReposNotifierProvider.notifier)
+          .getFirstSearchedReposPage(widget.searchTerm),
     );
   }
 
@@ -39,18 +42,18 @@ class _StarredReposPageState extends State<StarredReposPage> {
           context.read(authNotifierProvider.notifier).signOut();
         },
         onShouldNavigateToResultPage: (searchTerm) {
-          AutoRouter.of(context).push(
+          AutoRouter.of(context).pushAndPopUntil(
             SearchedReposRoute(searchTerm: searchTerm),
+            predicate: (route) => route.settings.name == StarredReposRoute.name,
           );
         },
         body: PaginatedReposListView(
-          paginatedReposNotifierProvider: starredReposNotifierProvider,
+          paginatedReposNotifierProvider: searchedReposNotifierProvider,
           getNextPage: (watch) {
-            watch(starredReposNotifierProvider.notifier)
-                .getNextStarredReposPage();
+            watch(searchedReposNotifierProvider.notifier)
+                .getNextSearchedReposPage(widget.searchTerm);
           },
-          noResultMessage:
-              "That's about everyting we could find in your starred repos right now.",
+          noResultMessage: "There is no result according to your search term.",
         ),
       ),
     );
