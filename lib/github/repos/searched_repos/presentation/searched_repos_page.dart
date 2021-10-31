@@ -36,7 +36,7 @@ class _SearchedReposPageState extends State<SearchedReposPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SearchBar(
-        title: 'Starred Repos',
+        title: widget.searchTerm,
         hint: 'Search all repositories...',
         onSignOutButtonPressed: () {
           context.read(authNotifierProvider.notifier).signOut();
