@@ -62,14 +62,18 @@ class RepovuApp extends ConsumerWidget {
         },
         child: MaterialApp.router(
           title: 'Repvu',
-          theme: ThemeData(
-            primarySwatch: Colors.green,
-          ),
+          theme: _setUpThemeData(),
           debugShowCheckedModeBanner: false,
           routeInformationParser: appRouter.defaultRouteParser(),
           routerDelegate: appRouter.delegate(),
         ),
       ),
+    );
+  }
+
+  ThemeData _setUpThemeData() {
+    return ThemeData(
+      primarySwatch: Colors.green,
     );
   }
 }

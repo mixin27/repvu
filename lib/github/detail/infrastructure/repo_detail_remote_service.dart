@@ -99,6 +99,8 @@ class RepoDetailRemoteService {
     String fullRepoName, {
     required bool isCurrentlyStarred,
   }) async {
+    print(fullRepoName);
+    print(isCurrentlyStarred);
     final requestUri = Uri.https(
       'api.github.com',
       '/user/starred/$fullRepoName',
@@ -107,7 +109,7 @@ class RepoDetailRemoteService {
     try {
       final response = await (isCurrentlyStarred
           ? _dio.deleteUri(requestUri)
-          : _dio.patchUri(requestUri));
+          : _dio.putUri(requestUri));
 
       if (response.statusCode == 204 /* success with no content */) {
         return unit;
